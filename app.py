@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import base64
 from pydantic import BaseModel, Field
+from pydantic import ConfigDict
 from typing import Optional
 import numpy as np
 import librosa
@@ -14,8 +15,9 @@ class AudioRequest(BaseModel):
     language: str
     explain_level: str = "short"
 
-    class Config:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        populate_by_name=True
+    )
 
 app = FastAPI()
 
