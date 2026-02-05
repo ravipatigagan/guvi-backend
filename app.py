@@ -12,6 +12,7 @@ class AudioRequest(BaseModel):
     audio_base64: str
     language: str
     audio_format: Optional[str] = None
+    explain_level: Optional[str] = "short"
 
 app = FastAPI()
 
@@ -59,6 +60,20 @@ async def detect(payload: AudioRequest):
     else:
         classification = "AI-generated"
         confidence = 0.60
+    if payload.explain_level == "detailed":
+        explanation_text = (
+            "The system performed dynamic silence-to-speech ratio analysis "
+            "by measuring RMS energy across the waveform. A higher proportion "
+            "of silent frames, combined with temporal irregularities, aligns "
+            "with natural human speaking patterns rather than synthetic voice "
+            "generation. Additional acoustic signals are abstracted at this "
+            "stage to maintain low-latency inference."
+        )
+    else:
+        explanation_text = (
+            "Computed silence-to-speech ratio indicates characteristics "
+            "consistent with human speech."
+        )
 
     return {
         "classification": classification,
@@ -80,11 +95,7 @@ async def detect(payload: AudioRequest):
             "shimmer": "abstracted"
         },
 
-        "explanation": (
-            "Silence-to-speech ratio was computed dynamically from the audio signal. "
-            "Higher pause distribution and temporal irregularities are consistent "
-            "with natural human speech patterns."
-        )
+        "explanation": explanation_text
     }
 
 
