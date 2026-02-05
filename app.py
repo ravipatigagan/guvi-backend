@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import base64
+from pydantic import BaseModel
+class AudioRequest(BaseModel):
+    audio_base64: str
+    language: str
+
 
 app = FastAPI()
 
@@ -13,7 +18,7 @@ app.add_middleware(
 )
 
 @app.post("/detect")
-async def detect(request: Request):
+async def detect(payload: AudioRequest):
     data = await request.json()
 
     language = data.get("language")
