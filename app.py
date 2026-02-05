@@ -44,4 +44,11 @@ async def detect(request: Request):
         "sample_rate": sr
     }
 }
+@app.get("/")
+def root():
+    return {
+        "status": "running",
+        "service": "AI Voice Detector API",
+        "health": "OK"
+    }
 
