@@ -30,8 +30,18 @@ async def detect(request: Request):
         return {"error": "Invalid base64 audio"}
 
     return {
-        "status": "success",
-        "message": "Audio received successfully",
-        "language": language,
-        "audio_format": audio_format
+    "classification": "HUMAN_GENERATED",
+    "confidence": 0.51,
+    "explanation": {
+        "spectral_artifacts": "Not analyzed yet",
+        "prosody_analysis": "Not analyzed yet",
+        "language_consistency": "Not analyzed yet",
+        "model_reasoning": "Baseline response before AI model integration"
+    },
+    "metadata": {
+        "language": req.language,
+        "duration_seconds": round(len(audio) / sr, 2),
+        "sample_rate": sr
     }
+}
+
