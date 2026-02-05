@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import base64
 from pydantic import BaseModel
@@ -19,11 +19,11 @@ app.add_middleware(
 
 @app.post("/detect")
 async def detect(payload: AudioRequest):
-    data = await request.json()
+    
 
-    language = data.get("language")
-    audio_format = data.get("audio_format")
-    audio_base64 = data.get("audio_base64")
+    language = payload.language
+    audio_format = payload.audio_format
+    audio_base64 = payload.audio_base64
 
     if not audio_base64:
         return {"error": "audio_base64 missing"}
