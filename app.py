@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import base64
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 import numpy as np
 import librosa
@@ -9,10 +9,13 @@ import io
 import time
 
 class AudioRequest(BaseModel):
-    audio_base64: str
+    audio_base64: str = Field(..., alias="audioBase64")
+    audio_format: str = Field(..., alias="audioFormat")
     language: str
-    audio_format: Optional[str] = None
-    explain_level: Optional[str] = "short"
+    explain_level: str = "short"
+
+    class Config:
+        allow_population_by_field_name = True
 
 app = FastAPI()
 
